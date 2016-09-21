@@ -7,7 +7,7 @@ function hook_example_schema() {
   $schema['jokes'] = array(
     'fields' => array(
       'jid' => array(
-        'type' => 'int',
+        'type' => 'serial',
         'not null' => TRUE,
         'description' => "Joke ID: The unique Joke ID for the added joke"
       ),

@@ -3,12 +3,12 @@
 function hook_example_menu() {
   $items = [];
 
-  $items['admin/content/jokes'] = [
+  $items['joke/list'] = [
     'title' => 'Jokes',
     'description' => 'List and edit site jokes.',
-    'page callback' => 'jokes_admin',
+    'page callback' => 'joke_admin',
     'access callback' => TRUE,
-    'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
+    'type' => MENU_NORMAL_ITEM,
     'file' => 'hook_example.admin.inc',
   ];
 
@@ -39,6 +39,8 @@ function hook_example_menu() {
     'context' => MENU_CONTEXT_INLINE,
     'file' => 'hook_example.pages.inc',
   );
+
+  return $items;
 }
 
 function get_joke_by_id($jid) {
@@ -52,7 +54,18 @@ function get_joke_by_id($jid) {
 
 function joke_create($joke) {
   $joke = (object) $joke;
+  
+  if ($joke->value) {
+    module_invoke_all('joke_presave', $joke);
+    drupal_set_message(print_r($joke, TRUE));
+    $record = [
+      'rating' => $joke->rating,
+      'created' => $joke->created,
+      'value' => $joke->value
+    ];
 
+    drupal_write_record('jokes', $record);
+  }
 }
 
 function joke_delete($jid) {

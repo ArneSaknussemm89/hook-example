@@ -18,7 +18,8 @@ function joke_overview_list_page($form, &$form_state) {
     'Joke ID',
     'Rating',
     'Joke',
-    'Created'
+    'Created',
+    'Operations'
   ];
 
   $jokes = [];
@@ -40,6 +41,12 @@ function joke_overview_list_page($form, &$form_state) {
             '#type' => 'link',
             '#title' => $record->jid,
             '#href' => 'joke/' . $record->jid
+          ],
+        ],
+        'rating' => [
+          'data' => [
+            '#type' => 'text',
+            '#title' => $record->rating,
           ],
         ],
         'joke' => [

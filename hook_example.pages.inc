@@ -24,18 +24,33 @@ function joke_add_form($form, &$form_state) {
     '#weight' => 1
   ];
 
-//  $form['actions']['submit'] = [
-//    '#type' => 'submit',
-//    '#submit' => array('joke_add_submit'),
-//    '#value' => t('Add Joke'),
-//    '#weight' => 50
-//  ];
+  $form['submit'] = [
+    '#type' => 'submit',
+    //'#submit' => array('joke_add_submit'),
+    '#value' => t('Add Joke'),
+    '#weight' => 50
+  ];
 
   return $form;
 }
 
 function joke_add_form_submit($form, &$form_state) {
+  $values = $form_state['values'];
 
+  if (!empty($values)) {
+    drupal_set_message("Made it this far");
+    if (isset($values['value'])) {
+      $joke = new stdClass();
+
+      $joke->value = $values['value'];
+      $joke->created = time();
+      $joke->rating = 0;
+
+      drupal_set_message("Tried to create this joke..." . PHP_EOL . print_r($joke, TRUE));
+
+      joke_create($joke);
+    }
+  }
 }
 
 /**

@@ -1,3 +1,5 @@
 name = Hook Example
 description = This module provides some example code for explaining Drupal Hooks
 core = 7.x
+
+configure = jokes/list
