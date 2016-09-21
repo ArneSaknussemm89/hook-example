@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Implementation of hook_schema().
+ */
+function hook_example_schema() {
+  $schema['jokes'] = array(
+    'fields' => array(
+      'jid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => "Joke ID: The unique Joke ID for the added joke"
+      ),
+      'rating' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => "The rating for the Joke. Ranges between 1 and 10"
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The time that the joke was created, as a Unix timestamp.',
+      ),
+      'value' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'default' => '0',
+        'not null' => TRUE,
+        'description' => 'The actual Joke'
+      ),
+    ),
+    'primary key' => array('jid'),
+  );
+  return $schema;
+}

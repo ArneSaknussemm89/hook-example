@@ -1,0 +1,62 @@
+<?php
+
+function hook_example_menu() {
+  $items = [];
+
+  $items['admin/content/jokes'] = [
+    'title' => 'Jokes',
+    'description' => 'List and edit site jokes.',
+    'page callback' => 'jokes_admin',
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
+    'file' => 'hook_example.admin.inc',
+  ];
+
+  $items['joke/add'] = [
+    'title' => 'Add New Joke',
+    'description' => 'Returns the add new Joke form',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('joke_add_form'),
+    'access callback' => TRUE,
+    'file' => 'hook_example.pages.inc'
+  ];
+
+  $items['joke/%joke'] = [
+    'title callback' => 'joke_title',
+    'title arguments' => array(1),
+    'description' => 'View a joke on the site',
+    'page callback' => 'joke_view',
+    'page arguments' => array(1),
+
+  ];
+  $items['joke/%joke/delete'] = array(
+    'title' => 'Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('joke_delete_confirm', 1),
+    'access callback' => TRUE,
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_INLINE,
+    'file' => 'hook_example.pages.inc',
+  );
+}
+
+function get_joke_by_id($jid) {
+  $query = db_select('jokes', 'j');
+  $query->fields('j', ['jid', 'value', 'created', 'rating']);
+  $query->condition('j.jid', $jid, '=');
+  $results = $query->execute()->fetchAssoc();
+
+  return $results;
+}
+
+function joke_create($joke) {
+  $joke = (object) $joke;
+
+}
+
+function joke_delete($jid) {
+  db_delete('jokes')
+    ->condition('jid', $jid)
+    ->execute();
+}
